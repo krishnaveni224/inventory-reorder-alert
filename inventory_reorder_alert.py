@@ -17,6 +17,7 @@ try:
                 # Check stock level
                 if quantity <= threshold:
                     print(f"{item} - REORDER")
+
                     restock_items.append({
                         "Item": item,
                         "Quantity": quantity,
@@ -31,7 +32,7 @@ try:
 except FileNotFoundError:
     print("Error: stock.csv file not found.")
 
-# Create restock report
+# Create restock report CSV
 with open("restock_report.csv", "w", newline="") as file:
     fieldnames = ["Item", "Quantity", "Threshold"]
 
@@ -44,7 +45,7 @@ with open("restock_report.csv", "w", newline="") as file:
 
 print("\nRestock report created successfully!")
 
-# Print report
+# Print Restock Report
 print("\n------ RESTOCK NEEDED REPORT ------")
 
 if restock_items:
@@ -53,6 +54,21 @@ if restock_items:
         print(f"Current Quantity: {item['Quantity']}")
         print(f"Reorder Threshold: {item['Threshold']}")
         print("----------------------------")
+else:
+    print("All items are sufficiently stocked.")
+
+# Bonus: Simulated Email Alert
+print("\n========== EMAIL ALERT ==========")
+print("Subject: Inventory Reorder Alert\n")
+
+if restock_items:
+    print("Dear Warehouse Manager,\n")
+    print("The following items need to be reordered:\n")
+
+    for item in restock_items:
+        print(f"- {item['Item']} (Current: {item['Quantity']}, Threshold: {item['Threshold']})")
+
+    print("\nPlease restock these items as soon as possible.")
 else:
     print("All items are sufficiently stocked.")
     
